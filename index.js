@@ -49,9 +49,9 @@ imageInput.addEventListener("change", (event) => {
   var data = new FormData();
   data.append("image", file);
 
-  const apiKey = 4047816e54c7e74cf2966014e99046df
+  const apiKey = "4047816e54c7e74cf2966014e99046df"
 
-  fetch('https://api.imgbb.com/1/upload?key=${apiKey}', {
+  fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
     method: "POST",
     body: data,
   })
