@@ -57,7 +57,12 @@ imageInput.addEventListener("change", (event) => {
     },
     body: data,
   })
-    .then((result) => result.json())
+    .then((result) => {
+      if (!result.ok) {
+        throw new Error("Imgur returned error: " + result.status);
+      }
+      return result.json();
+    })
     .then((response) => {
       var url = response.data.link;
       upload.classList.remove("error_shown");
@@ -66,6 +71,12 @@ imageInput.addEventListener("change", (event) => {
       upload.classList.remove("upload_loading");
       upload.querySelector(".upload_uploaded").src = url;
     });
+    .catch((error) => {
+      console.error("Upload error:", error);
+
+      upload.classlist.remove("upload_loading");
+
+      alert("Failed to upload image. Imgur might be down (Error 503).");
 });
 
 document.querySelector(".go").addEventListener("click", () => {
