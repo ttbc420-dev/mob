@@ -43,28 +43,26 @@ upload.addEventListener("click", () => {
 imageInput.addEventListener("change", (event) => {
   upload.classList.remove("upload_loaded");
   upload.classList.add("upload_loading");
-
   upload.removeAttribute("selected");
 
   var file = imageInput.files[0];
   var data = new FormData();
   data.append("image", file);
 
-  fetch("	https://api.imgur.com/3/image", {
+  const apiKey = 4047816e54c7e74cf2966014e99046df
+
+  fetch('https://api.imgbb.com/1/upload?key=${apiKey}', {
     method: "POST",
-    headers: {
-      Authorization: "Client-ID e4d98a899c8c946",
-    },
     body: data,
   })
     .then((result) => {
       if (!result.ok) {
-        throw new Error("Imgur returned error: " + result.status);
+        throw new Error("Upload failed: " + result.status);
       }
       return result.json();
     })
     .then((response) => {
-      var url = response.data.link;
+      var url = response.data.url;
       upload.classList.remove("error_shown");
       upload.setAttribute("selected", url);
       upload.classList.add("upload_loaded");
@@ -73,10 +71,8 @@ imageInput.addEventListener("change", (event) => {
     });
     .catch((error) => {
       console.error("Upload error:", error);
-
       upload.classlist.remove("upload_loading");
-
-      alert("Failed to upload image. Imgur might be down (Error 503).");
+      alert("Failed to upload image. Error 503.");
 });
 
 document.querySelector(".go").addEventListener("click", () => {
